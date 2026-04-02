@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' hide Order;
 
 import '../firebase_options.dart';
 import '../models/chat_message.dart';
@@ -38,7 +38,7 @@ class NitaAiApi {
     updatedAt: DateTime.now(),
   );
 
-  late final List<ChatMessage> _demoMessages = <ChatMessage>[
+  late List<ChatMessage> _demoMessages = <ChatMessage>[
     ChatMessage(
       id: 'welcome_assistant',
       text: 'Hi! I can help you review your cart, delivery ETA, or order status.',
