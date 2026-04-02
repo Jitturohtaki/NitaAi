@@ -1,0 +1,76 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function uid() {
+      return request.auth.uid;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && get(/databases/$(database)/documents/users/$(uid())).data.role == "admin";
+    }
+
+    function isSelf(docId) {
+      return isSignedIn() && docId == uid();
+    }
+
+    function hasRole(role) {
+      return isSignedIn() && get(/databases/$(database)/documents/users/$(uid())).data.role == role;
+    }
+
+    function isOrderParticipant(resourceData) {
+      return isSignedIn() && (
+        resourceData.userId == uid() ||
+        resourceData.vendorId == uid() ||
+        resourceData.driverId == uid() ||
+        isAdmin()
+      );
+    }
+
+    match /users/{userId} {
+      allow create: if isSelf(userId);
+      allow read: if isSelf(userId) || isAdmin();
+      allow update: if isSelf(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /vendors/{vendorId} {
+      allow create: if isSelf(vendorId) && hasRole("vendor");
+      allow read: if isSignedIn();
+      allow update: if isSelf(vendorId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /drivers/{driverId} {
+      allow create: if isSelf(driverId) && hasRole("driver");
+      allow read: if isSignedIn();
+      allow update: if isSelf(driverId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /orders/{orderId} {
+      allow create: if isSignedIn() && hasRole("user") && request.resource.data.userId == uid();
+
+      allow read: if isOrderParticipant(resource.data);
+
+      allow update: if isOrderParticipant(resource.data) &&
+        request.resource.data.userId == resource.data.userId &&
+        request.resource.data.vendorId == resource.data.vendorId &&
+        (
+          request.resource.data.driverId == resource.data.driverId ||
+          uid() == resource.data.vendorId ||
+          isAdmin()
+        );
+
+      allow delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
