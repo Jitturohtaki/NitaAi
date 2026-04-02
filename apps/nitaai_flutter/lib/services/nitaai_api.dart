@@ -13,9 +13,10 @@ import 'firestore_refs.dart';
 class NitaAiApi {
   NitaAiApi({
     FirebaseFirestore? firestore,
-  }) : _refs = FirestoreRefs(firestore: firestore);
+  }) : _firestore = firestore;
 
-  final FirestoreRefs _refs;
+  final FirebaseFirestore? _firestore;
+  late final FirestoreRefs _refs = FirestoreRefs(firestore: _firestore);
   final StreamController<int> _demoChanges = StreamController<int>.broadcast();
 
   final Vendor _demoVendor = Vendor(
