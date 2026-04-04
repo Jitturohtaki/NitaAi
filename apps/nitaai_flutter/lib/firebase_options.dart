@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
 class DefaultFirebaseOptions {
-  static const bool isConfigured = false;
+  static const bool isConfigured = true;
 
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -46,19 +46,21 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'REPLACE_ME',
-    appId: 'REPLACE_ME',
-    messagingSenderId: 'REPLACE_ME',
-    projectId: 'REPLACE_ME',
-    authDomain: 'REPLACE_ME',
-    storageBucket: 'REPLACE_ME',
+    apiKey: 'AIzaSyDgwybctmhmVRK1KFivh8SWAOJeSx9bsR0',
+    appId: '1:314655650414:web:ca98ad0a6efeb443e66c7f',
+    messagingSenderId: '314655650414',
+    projectId: 'nitaai',
+    authDomain: 'nitaai.firebaseapp.com',
+    storageBucket: 'nitaai.firebasestorage.app',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'REPLACE_ME',
-    appId: 'REPLACE_ME',
-    messagingSenderId: 'REPLACE_ME',
-    projectId: 'REPLACE_ME',
+    apiKey: 'AIzaSyDgwybctmhmVRK1KFivh8SWAOJeSx9bsR0',
+    appId: '1:314655650414:web:acc8c2cee30f3c02e66c7f',
+    messagingSenderId: '314655650414',
+    projectId: 'nitaai',
+    authDomain: 'nitaai.firebaseapp.com',
+    storageBucket: 'nitaai.firebasestorage.app',
   );
 
   static const FirebaseOptions linux = FirebaseOptions(
